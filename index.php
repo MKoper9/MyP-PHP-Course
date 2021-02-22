@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace App;
 
 require_once("src/Utils/debug.php");
-$test = 'test';
-?>
+require_once("src/View.php");
 
-<html>
-<head>
+const DEFAULT_ACTION = 'list';
 
-</head>
+$action = $_GET['action'] ?? DEFAULT_ACTION;
 
-<body>
-    <h1>Witamy!!</h1>
-    <div>
-        <?php echo $test ?>
-    </div>
-</body>
-</html>
+$view = new View();
+$view->render($action);
