@@ -13,9 +13,9 @@ function dump($data)
         padding: 0px 10px;
         border: 1px solid gray;
         background: lightgray;">
-<pre>';
-    print_r($data);
-    echo '</pre>
-</div>
-<br/>';
+    <pre>';
+        print_r($data);
+        echo '</pre>
+    </div>
+    <br/>';
 }
