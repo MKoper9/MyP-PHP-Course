@@ -11,7 +11,7 @@ function dump($data)
     style="
         display: inline-block;
         padding: 0px 10px;
-        border: 1px solid gray;
+        border: 1px dashed gray;
         background: lightgray;">
     <pre>';
         print_r($data);
