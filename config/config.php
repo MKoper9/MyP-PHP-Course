@@ -7,6 +7,6 @@ return [
         'host' => 'localhost',
         'database' =>'notes',
         'user' => 'user_notes',
-        'password' => 'Pk7HiyTPaoYPiqKe'
+        'password' => 'Wtrpei76M2UuNPDX'
     ]
 ];
