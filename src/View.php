@@ -2,13 +2,29 @@
 
 declare(strict_types=1);
 
-
 namespace App;
-
 class View
 {
-    public function render(string $page, array $params): void  //?przed string - zmienna może być nullem
+    public function render(string $page, array $params=[]): void  //?przed string - zmienna może być nullem
     {
+        $params = $this->escape($params);
         require_once("templates/layout.php");        
+    }
+
+    private function escape(array $params): array
+    {
+        $clearParams = [];
+
+        foreach($params as $key => $param){
+            if(is_array($param)){
+                $clearParams[$key] = $this->escape($param); //rekurencja
+            }else if($param){
+                $clearParams[$key] = htmlentities($param);
+            }else{
+                $clearParams[$key] = $param;
+            }
+        }
+
+        return $clearParams;
     }
 }
