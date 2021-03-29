@@ -8,6 +8,8 @@ use App\Request;
 use App\View;
 use App\Database;
 use App\Exception\ConfigurationException;
+use App\Exception\NotFoundException;
+use App\Exception\StorageException;
 
 abstract class AbstractController
 {
@@ -37,12 +39,18 @@ abstract class AbstractController
 
   final public function run(): void
   {
-    $action = $this->action() . 'Action'; //fajne miejsce 
-    if(!method_exists($this, $action)){
-      $action = self::DEFAULT_ACTION . 'Action';
-    }
-
-    $this->$action();    
+    try {
+        $action = $this->action() . 'Action'; //fajne miejsce
+        if (!method_exists($this, $action)) {
+            $action = self::DEFAULT_ACTION . 'Action';
+        }
+        throw new StorageException('Testowa wiadomość błędu');
+        $this->$action();
+      }catch(StorageException $e){
+        $this->view->render('error', ['message' => $e->getMessage()]);
+      }catch (NotFoundException $e) {
+        $this->redirect('/', ['error' => 'noteNotFound']);
+      }  
   }
 
   private function action(): string
