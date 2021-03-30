@@ -14,7 +14,7 @@ class NoteController extends AbstractController
          'title' => $this->request->postParam('title'),
          'description' => $this->request->postParam('description')
        ];
-       $this->database->createNote($noteData);
+       $this->noteModel->create($noteData);
        $this->redirect('/', ['before' => 'created']);
       }
 
@@ -42,11 +42,11 @@ class NoteController extends AbstractController
     }
 
     if ($phrase){
-      $noteList = $this->database->searchNotes($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
-      $notes = $this->database->getSearchCount($phrase);
+      $noteList = $this->noteModel->search($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
+      $notes = $this->noteModel->searchCount($phrase);
     }else {
-      $noteList = $this->database->getNotes($pageNumber, $pageSize, $sortBy, $sortOrder);
-      $notes = $this->database->getCount();
+      $noteList = $this->noteModel->list($pageNumber, $pageSize, $sortBy, $sortOrder);
+      $notes = $this->noteModel->count();
     }
 
     $this->view->render(
@@ -74,13 +74,13 @@ class NoteController extends AbstractController
         'title' => $this->request->postParam('title'),
         'description' =>$this->request->postParam('description')
       ];
-      $this->database->editNote($noteId, $noteData);
+      $this->noteModel->edit($noteId, $noteData);
       $this->redirect('/', ['before' => 'edited']);
     }
     
     $this->view->render(
       'edit',
-      ['note' => $this->getNote()]
+      ['note' => $this->get()]
     );
   }
 
@@ -88,12 +88,12 @@ class NoteController extends AbstractController
   {
     if($this->request->isPost()){
       $id = (int) $this->request->postParam('id');
-      $this->database->deleteNote($id);
+      $this->noteModel->delete($id);
       $this->redirect('/', ['before' => 'deleted']);
     }
     $this->view->render(
       'delete',
-      ['note' => $this->getNote()]
+      ['note' => $this->get()]
     );
   }
 
@@ -103,6 +103,6 @@ class NoteController extends AbstractController
     if(!$noteId){
       $this->redirect('/', ['error' => 'missingNoteId']);
     }    
-    return $this->database->getNote($noteId);
+    return $this->noteModel->get($noteId);
   }
 }
